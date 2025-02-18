@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from .forms import LoginForm, RegistroForm
 from django.contrib import messages
 from .models import UsuarioPersonalizado
+from django.contrib.auth.decorators import login_required
 
 def login_view(request):
     if request.method == 'POST':
@@ -14,7 +15,11 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect('/')  # Redirige a la página principal
+                print(user.rol)
+                if user.rol == 'cliente' :
+                    return redirect('historial_compra')
+                else:
+                    return HttpResponseRedirect('/')  # Redirige a la página principal
             else:
                 return render(request, 'login.html', {'form': form, 'error': 'Credenciales incorrectas'})
         else:
@@ -23,7 +28,7 @@ def login_view(request):
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
 
-
+@login_required(login_url='login/')
 def home(request):
     return render(request, 'index.html')
 
@@ -44,7 +49,6 @@ def registro(request):
         form = RegistroForm()
 
     return render(request, 'registro.html', {'form': form})
-
 
 def listar_usuarios(request):
     empleados = UsuarioPersonalizado.objects.filter(rol='empleado')
