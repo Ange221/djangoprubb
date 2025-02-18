@@ -1,0 +1,135 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Login</title>
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            {% if form %}
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Ingresa tu correo electrónico</h1>
+                                        {% if error %}
+                                        <p style="color: red;">{{ error }}</p>
+                                        {% endif %}
+                                        {% if messages %}
+                                            <div class="messages">
+                                                {% for message in messages %}
+                                                    <p class="message {{ message.tags }}">{{ message }}</p>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <form method="POST" class="user">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            {{ form.email }}
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Buscar historial</button>
+                                    </form>
+                                    <hr>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {%if compras %}
+                            <div class="container-fluid">
+                                <!-- Content Row -->
+                                <div class="row">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="container-fluid">
+                                            <!-- DataTales Example -->
+                                            <div class="card shadow mb-4">
+                                                <div class="card-header py-3">
+                                                    <h6 class="m-0 font-weight-bold text-primary">Datos de usuarios</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Fecha</th>
+                                                                    <th>Total de venta</th>
+                                                                    <th>Opciones</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for compra in compras %}
+                                                                    <tr>
+                                                                        <td>{{ compra.fecha_compra }}</td>
+                                                                        <td>{{ compra.total_venta }}</td>
+                                                                        <td><a  href="{% url 'compra_cupones' compra.id %}">Ver</a></td>
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr>
+                                                                        <td colspan="4" >No hay compras registrados.</td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="container-fluid">
+                                            <div class="card shadow mb-4">
+                                                <div class="card-header py-3">
+                                                    <h6 class="m-0 font-weight-bold text-primary">Cupón</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Código de Cupón</th>
+                                                                    <th>Litros</th>
+                                                                    <th>Descuento</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for cp in cupones %}
+                                                                    <tr>
+                                                                        <td>{{ cp.cupon.nombre }}</td>
+                                                                        <td>{{ cp.cupon.litros }}</td>
+                                                                        <td>$ {{ cp.cupon.descuento }}</td>
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr>
+                                                                        <td colspan="4" >No hay cupones asignados.</td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

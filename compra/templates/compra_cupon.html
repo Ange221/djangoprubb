@@ -1,0 +1,97 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Compra realizada</title>
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="card mb-4 py-3 border-bottom-success">
+                            <div class="card-body text-center">
+                                Ticket de compra
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>Cliente</p>
+                            <p class="mb-0"></p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ usuario.nombre }} {{ usuario.apellidos }}</a>
+                            </div>
+                            <p>Correo electrónico</p>
+                            <p class="mb-0"></p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ usuario.email }}</a>
+                            </div>
+                        </div>
+                        <hr class="border-bottom-success">
+                        <div class="card-body">
+                            <p>Datos de compra</p>
+                            <p class="mb-0"></p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ compra.descripcion }}</a>
+                            </div>
+                            <p>Litros vendidos:</p>
+                            <p class="mb-0"></p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ compra.litros_vendidos }} lts.</a>
+                            </div>
+                            <p>Método de compra:</p>
+                            <p class="mb-0"></p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ compra.metodo_pago }}</a>
+                            </div>
+                            <hr class="border-bottom-success">
+                            <p>Datos de cupón</p>
+                            <p class="mb-0">Código de cupón:</p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ cupon.nombre }}</a>
+                            </div>
+                            <p class="mb-0">Descripción:</p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ cupon.descripcion }}</a>
+                            </div>
+                            <p>Litros:</p>
+                            <p class="mb-0"></p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ cupon.litros }} lts.</a>
+                            </div>
+                            <hr class="border-bottom-success">
+                            <p class="mb-0"> Fecha de compra</p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">{{ compra.fecha_compra }}</a>
+                            </div>
+                            <hr class="border-bottom-success">
+                            <p class="mb-0">Subtotal de compra:</p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">$ {{ total }}</a>
+                            </div>
+                            <p class="mb-0">Descuento:</p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">$ {{ cupon.descuento }}</a>
+                            </div>
+                            <p>Total de compra:</p>
+                            <p class="mb-0"></p>
+                            <div class="form-group">
+                                <a type="password" class="form-control form-control-user">$ {{ compra.total_venta }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
