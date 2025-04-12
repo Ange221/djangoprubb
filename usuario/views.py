@@ -1,10 +1,25 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
 from .forms import LoginForm, RegistroForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import UsuarioPersonalizado
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+@login_required
+def get_data(request):
+    print(request.user.nombre)
+    return render(request, 'tu_template.html', {
+        'user': request.user
+    })
+
+def inicio(request):
+    return render(request, 'index.html')
 
 def login_view(request):
     if request.method == 'POST':
@@ -12,43 +27,50 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            
+            print("Intentando autenticar:", username)  # DEBUG
             user = authenticate(username=username, password=password)
+            
             if user is not None:
                 login(request, user)
-                print(user.rol)
-                if user.rol == 'cliente' :
-                    return redirect('historial_compra')
-                else:
-                    return HttpResponseRedirect('/')  # Redirige a la página principal
+                return redirect('inicio')
             else:
+                print("Autenticación fallida")  # DEBUG
                 return render(request, 'login.html', {'form': form, 'error': 'Credenciales incorrectas'})
         else:
-            return render(request, 'login.html', {'form': form, 'error': 'Credenciales incorrectas'})
+            print("Formulario inválido")  # DEBUG
+            return render(request, 'login.html', {'form': form, 'error': 'Formulario inválido'})
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
 
-@login_required(login_url='login/')
-def home(request):
-    return render(request, 'index.html')
 
+def home(request):
+    return render(request, 'Inicio.html')
 
 def registro(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Usuario registrado correctamente')
-            return redirect('registro')  # Redirige a la página de login
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, error)
-            
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+        
+         # Toma el usuario y contraseña del formulario
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+
+            # Autenticar y loguear al usuario recién creado
+            user = authenticate(username=username, password=raw_password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # Redirige a la página principal
+
     else:
-        form = RegistroForm()
+        form = UserCreationForm()
 
     return render(request, 'registro.html', {'form': form})
+
 
 def listar_usuarios(request):
     empleados = UsuarioPersonalizado.objects.filter(rol='empleado')

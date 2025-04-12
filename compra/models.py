@@ -2,6 +2,7 @@ from django.db import models
 from datetime import date
 from cupon.models import Cupon
 
+
 # Create your models here.
 class Compra(models.Model):
     COMPRA_CHOICES = [
