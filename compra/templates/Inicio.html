@@ -1,0 +1,527 @@
+{% load static %} 
+{% load static %} 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - Sistema de Gasolinería</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #8BC34A;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        .welcome {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .carousel {
+            width: 50%;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .carousel img {
+            width: 100%;
+            display: none;
+        }
+        .menu {
+            background: #4CAF50;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+        .support {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #FF9800;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Mapa */
+        .map-section {
+            width: 100%;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            display: none; /* Oculto por defecto */
+        }
+
+        .map-section iframe {
+            border-radius: 10px;
+        }
+
+        /* Modal de Estándar de Calidad, Quiénes Somos y Soporte */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+        .modal h2 {
+            margin-top: 0;
+        }
+        .modal button {
+            padding: 10px;
+            background-color: #FF9800;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .modal button:hover {
+            background-color: #e68900;
+        }
+
+        /* Estilos para el formulario de soporte */
+        .support-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .support-form input, .support-form textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .support-form textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .support-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .support-form button:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilos para la sección de afiliados */
+        .affiliates-section {
+            padding: 20px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .affiliates-section h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        .affiliates-section p {
+            text-align: center;
+            color: #555;
+        }
+
+        .affiliates-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .affiliate-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 30%;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .affiliate-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .affiliate-card h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .affiliate-card p {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .affiliate-card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #FF9800;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .affiliate-card a:hover {
+            background-color: #e68900;
+        }
+
+        /* Estilos para la sección de empresas */
+        .empresas-section {
+            padding: 20px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            display: none; /* Oculto por defecto */
+        }
+
+        .empresas-section h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        .empresas-section p {
+            text-align: center;
+            color: #555;
+        }
+
+        .empresas-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .empresa-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 30%;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .empresa-card h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .empresa-card p {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .empresa-card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #FF9800;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .empresa-card a:hover {
+            background-color: #e68900;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="#" id="quienes-somos-link">Quienes Somos</a>
+        <a href="#" id="empresa-link">Empresa</a>
+        <a href="#" id="mapa-link">Mapa</a>
+        <a href="#" id="estandar-link">Estándar de Calidad</a>
+        <a href="#" id="Cupon-link">cupon</a>
+        <a href="{% url 'login' %}" style="background: lightgreen; padding: 10px;">Entrar</a>
+        
+    </div>
+    <div class="container">
+        <div class="welcome">
+            <h2>¡Bienvenido al Sistema de Gestión de Gasolina!</h2>
+            <p>Optimiza el control de combustible con nuestro sistema de remuneración basado en cupones. Aquí podrás:</p>
+            <ul>
+                <li>✅ Generar y administrar cupones para la distribución eficiente de combustible.</li>
+                <li>✅ Monitorear el uso de cada cupón, asegurando transparencia y control.</li>
+                <li>✅ Registrar y gestionar solicitudes de combustible de manera rápida y sencilla.</li>
+                <li>✅ Consultar reportes y estadísticas para mejorar la planificación del consumo.</li>
+            </ul>
+            <p>Inicia sesión para comenzar. ¡Tu control de combustible más eficiente que nunca!</p>
+        </div>
+        <div class="carousel">
+            <img src="{% static 'img/gasolineria.jpeg' %}" alt="Imagen 1" style="display: block;">
+            <img src="{% static 'img/clientes.jpeg' %}" alt="Imagen 2" >
+            <img src="{% static 'img/gas.jpeg' %}" alt="Imagen 3" >
+        </div>
+    </div>
+
+    <!-- Sección del mapa -->
+    <div id="mapa" class="container map-section">
+        <h2>Ubicación</h2>
+        <p>Aquí puedes encontrar nuestra gasolinería.</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12684.517193814837!2d-99.1332!3d19.4326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDI1JzU3LjYiTiA5OcKwMDgnMDAuMCJX!5e0!3m2!1ses!2smx!4v1617742288000!5m2!1ses!2smx" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+
+    <!-- Sección de Afiliados -->
+    <div id="Cupon" class="cupon">
+        <h2>Nuestros Afiliados</h2>
+        <p>Colaboramos con las mejores empresas para ofrecerte un servicio de calidad.</p>
+        <div class="affiliates-grid">
+            <!-- Afiliado 1 -->
+            <div class="affiliate-card">
+                <img src="https://via.placeholder.com/150" alt="Logo Afiliado 1" class="affiliate-logo">
+                <h3>Gasolinería "El Rápido"</h3>
+                <p>Ofreciendo servicios de calidad desde 1990. Especializados en combustible premium.</p>
+                <a href="https://www.ejemploafiliado1.com" target="_blank">Visitar sitio web</a>
+            </div>
+
+            <!-- Afiliado 2 -->
+            <div class="affiliate-card">
+                <img src="https://via.placeholder.com/150" alt="Logo Afiliado 2" class="affiliate-logo">
+                <h3>Combustibles "EcoGreen"</h3>
+                <p>Comprometidos con el medio ambiente. Distribuidores de biocombustibles.</p>
+                <a href="https://www.ejemploafiliado2.com" target="_blank">Visitar sitio web</a>
+            </div>
+
+            <!-- Afiliado 3 -->
+            <div class="affiliate-card">
+                <img src="https://via.placeholder.com/150" alt="Logo Afiliado 3" class="affiliate-logo">
+                <h3>Gasolinería "La Estrella"</h3>
+                <p>Servicio las 24 horas. Amplia red de estaciones en todo el país.</p>
+                <a href="https://www.ejemploafiliado3.com" target="_blank">Visitar sitio web</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Empresas -->
+    <div id="empresas" class="empresas-section">
+        <h2>Empresas Aliadas</h2>
+        <p>Conoce algunas de las empresas con las que trabajamos.</p>
+        <div class="empresas-grid">
+            <!-- Empresa 1 -->
+            <div class="empresa-card">
+                <h3>Gasolinería "El Rápido"</h3>
+                <p>Ofreciendo servicios de calidad desde 1990. Especializados en combustible premium.</p>
+                <a href="#mapa" onclick="mostrarMapa()">Ver ubicación</a>
+            </div>
+
+            <!-- Empresa 2 -->
+            <div class="empresa-card">
+                <h3>Combustibles "EcoGreen"</h3>
+                <p>Comprometidos con el medio ambiente. Distribuidores de biocombustibles.</p>
+                <a href="#mapa" onclick="mostrarMapa()">Ver ubicación</a>
+            </div>
+
+            <!-- Empresa 3 -->
+            <div class="empresa-card">
+                <h3>Gasolinería "La Estrella"</h3>
+                <p>Servicio las 24 horas. Amplia red de estaciones en todo el país.</p>
+                <a href="#mapa" onclick="mostrarMapa()">Ver ubicación</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de "Quiénes Somos" -->
+    <div id="modal-quienes-somos" class="modal">
+        <div class="modal-content">
+            <h2>Quiénes Somos</h2>
+            <p>
+                En <strong>[Nombre de la Empresa]</strong>, somos líderes en la gestión y remuneración de gasolina, ofreciendo soluciones innovadoras para optimizar el consumo de combustible de empresas y particulares. Nos especializamos en proporcionar plataformas eficientes y seguras que permiten el control y administración de gastos en combustible, garantizando transparencia y ahorro.
+            </p>
+            <p>
+                Nuestro equipo está conformado por expertos en el sector energético y financiero, comprometidos en brindar un servicio de calidad que se adapte a las necesidades de cada cliente. A través de tecnología avanzada y procesos eficientes, aseguramos una experiencia fluida y beneficiosa para quienes confían en nosotros.
+            </p>
+            <p>
+                Trabajamos con una red de estaciones de servicio aliadas para garantizar una cobertura amplia y accesible, permitiendo a nuestros usuarios gestionar sus gastos de manera sencilla y efectiva. Nuestro objetivo es facilitar la movilidad y optimizar los recursos de nuestros clientes, contribuyendo al crecimiento de sus negocios y su bienestar.
+            </p>
+            <p>
+                En <strong>[Nombre de la Empresa]</strong>, creemos en la innovación, la confianza y la excelencia como pilares fundamentales de nuestro servicio. ¡Únete a nosotros y descubre cómo podemos ayudarte a mejorar la administración de tu combustible!
+            </p>
+            <button onclick="closeModal('modal-quienes-somos')">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Estándar de Calidad -->
+    <div id="modal-estandar" class="modal">
+        <div class="modal-content">
+            <h2>Normas del Estándar de Calidad</h2>
+            <h3>1. Diseño, Construcción, Operación y Mantenimiento</h3>
+            <p><strong>NOM-005-ASEA-2016:</strong> Establece los requisitos para el diseño, construcción, operación y mantenimiento de estaciones de servicio para almacenamiento y expendio de diésel y gasolinas. Su objetivo es garantizar la seguridad industrial, operativa y la protección al medio ambiente en estas instalaciones.</p>
+            <p><strong>NOM-008-ASEA-2019:</strong> Regula las estaciones de servicio dedicadas al expendio de gas licuado de petróleo (GLP) mediante el llenado de recipientes portátiles, asegurando prácticas seguras y eficientes en estas operaciones.</p>
+
+            <h3>2. Sistemas de Recuperación de Vapores</h3>
+            <p><strong>NOM-004-ASEA-2017:</strong> Define los sistemas de recuperación de vapores de gasolinas para el control de emisiones en estaciones de servicio. Incluye métodos de prueba para determinar la eficiencia, mantenimiento y parámetros de operación de estos sistemas, contribuyendo a la reducción de emisiones contaminantes.</p>
+
+            <h3>3. Instrumentos de Medición</h3>
+            <p><strong>NOM-005-SCFI-2017:</strong> Establece las especificaciones, métodos de prueba y verificación que se aplican a los sistemas para medición y despacho de gasolina y otros combustibles líquidos con un gasto máximo de 250 litros por minuto. Garantiza la exactitud y confiabilidad en las transacciones comerciales de combustibles líquidos.</p>
+
+            <h3>4. Especificaciones de Calidad de los Petrolíferos</h3>
+            <p><strong>NOM-016-CRE-2016:</strong> Emitida por la Comisión Reguladora de Energía (CRE), especifica los parámetros de calidad que deben cumplir los petrolíferos en México, asegurando que los combustibles comercializados sean adecuados para su uso y cumplan con los estándares establecidos.</p>
+
+            <h3>5. Administración de la Integridad de Ductos</h3>
+            <p><strong>NOM-009-ASEA-2017:</strong> Orienta la administración de la integridad de ductos de recolección, transporte y distribución de hidrocarburos, petrolíferos y petroquímicos, estableciendo lineamientos para garantizar su operación segura y eficiente.</p>
+
+            <button onclick="closeModal('modal-estandar')">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Soporte -->
+    <div id="modal-soporte" class="modal">
+        <div class="modal-content">
+            <h2>Soporte</h2>
+            <p>¿Necesitas ayuda? Completa el siguiente formulario y nos pondremos en contacto contigo.</p>
+            <form class="support-form">
+                <input type="text" placeholder="Nombre" required>
+                <input type="email" placeholder="Correo electrónico" required>
+                <input type="text" placeholder="Asunto" required>
+                <textarea placeholder="Mensaje" required></textarea>
+                <button type="submit">Enviar</button>
+            </form>
+            <button onclick="closeModal('modal-soporte')">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Botón de Soporte -->
+    <a href="#" id="soporte-link" class="support">Soporte</a>
+
+    <!-- Script para el modal y alternar entre secciones -->
+    <script>
+        let index = 0;
+        function showSlides() {
+            let slides = document.querySelectorAll('.carousel img');
+            slides.forEach(slide => slide.style.display = 'none');
+            index = (index + 1) % slides.length;
+            slides[index].style.display = 'block';
+            setTimeout(showSlides, 3000);
+        }
+        showSlides();
+
+        // Función para abrir el modal de "Quiénes Somos"
+        document.getElementById("quienes-somos-link").addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById("modal-quienes-somos").style.display = 'flex';
+        });
+
+        // Función para abrir el modal de "Estándar de Calidad"
+        document.getElementById("estandar-link").addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById("modal-estandar").style.display = 'flex';
+        });
+
+        // Función para abrir el modal de "Soporte"
+        document.getElementById("soporte-link").addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById("modal-soporte").style.display = 'flex';
+        });
+
+        // Función para alternar entre el mapa y los afiliados
+        document.getElementById("mapa-link").addEventListener('click', function(event) {
+            event.preventDefault();
+            const mapaSection = document.getElementById("mapa");
+            const afiliadosSection = document.getElementById("afiliados");
+            const empresasSection = document.getElementById("empresas");
+
+            if (mapaSection.style.display === "none") {
+                mapaSection.style.display = "block";
+                afiliadosSection.style.display = "none";
+                empresasSection.style.display = "none";
+            } else {
+                mapaSection.style.display = "none";
+                afiliadosSection.style.display = "block";
+            }
+        });
+
+        // Función para mostrar la sección de empresas
+        document.getElementById("empresa-link").addEventListener('click', function(event) {
+            event.preventDefault();
+            const empresasSection = document.getElementById("empresas");
+            const afiliadosSection = document.getElementById("afiliados");
+            const mapaSection = document.getElementById("mapa");
+
+            if (empresasSection.style.display === "none") {
+                empresasSection.style.display = "block";
+                afiliadosSection.style.display = "none";
+                mapaSection.style.display = "none";
+            } else {
+                empresasSection.style.display = "none";
+                afiliadosSection.style.display = "block";
+            }
+        });
+
+        // Función para mostrar la sección de afiliados
+        document.getElementById("afiliados-link").addEventListener('click', function(event) {
+            event.preventDefault();
+            const afiliadosSection = document.getElementById("afiliados");
+            const empresasSection = document.getElementById("empresas");
+            const mapaSection = document.getElementById("mapa");
+
+            if (afiliadosSection.style.display === "none") {
+                afiliadosSection.style.display = "block";
+                empresasSection.style.display = "none";
+                mapaSection.style.display = "none";
+            } else {
+                afiliadosSection.style.display = "none";
+            }
+        });
+
+        // Función para mostrar el mapa
+        function mostrarMapa() {
+            const mapaSection = document.getElementById("mapa");
+            const afiliadosSection = document.getElementById("afiliados");
+            const empresasSection = document.getElementById("empresas");
+
+            mapaSection.style.display = "block";
+            afiliadosSection.style.display = "none";
+            empresasSection.style.display = "none";
+        }
+
+        // Función para cerrar el modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    </script>
+</body>
+</html>
