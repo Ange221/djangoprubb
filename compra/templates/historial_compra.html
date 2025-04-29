@@ -19,33 +19,6 @@
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <div class="row">
-                            {% if form %}
-                            <div class="col-lg-12">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Ingresa tu correo electrónico</h1>
-                                        {% if error %}
-                                        <p style="color: red;">{{ error }}</p>
-                                        {% endif %}
-                                        {% if messages %}
-                                            <div class="messages">
-                                                {% for message in messages %}
-                                                    <p class="message {{ message.tags }}">{{ message }}</p>
-                                                {% endfor %}
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                    <form method="POST" class="user">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                            {{ form.email }}
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">Buscar historial</button>
-                                    </form>
-                                    <hr>
-                                </div>
-                            </div>
-                            {% endif %}
                             {%if compras %}
                             <div class="container-fluid">
                                 <!-- Content Row -->
@@ -123,7 +96,23 @@
                                     </div>
                                 </div>
                             </div>
+                            {%else %}
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <button class="btn btn-primary btn-user btn-block">No hay ventas disponibles</button>
+                                    <hr>
+                                </div>
+                            </div>
                             {% endif %}
+                            <div class="col-lg-12">
+                                
+                                <form action="{% url 'cerrar_sesion' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">Cerrar sesión</button>
+                                </form>
+                                
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

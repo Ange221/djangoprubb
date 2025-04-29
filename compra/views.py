@@ -5,6 +5,14 @@ from .models import Compra, UsuarioCupon
 from .utils.aceptacion_cupon import get_cupon
 from cupon.models import Cupon
 from usuario.models import UsuarioPersonalizado
+from django.contrib.auth.decorators import login_required
+
+# En tu archivo views.py
+from django.shortcuts import render
+
+def pagina_cliente(request):
+    return render(request, 'pagina_cliente.html')
+
 
 def registro(request):
     if request.method == 'POST':
@@ -43,7 +51,7 @@ def registro(request):
             else:
                 messages.success(request, 'Compra registrada correctamente')
 
-            return redirect('registro_compra')  # Redirige a la página correspondiente
+            return redirect('listar_compras')  # Redirige a la página correspondiente
 
         else:
             # Manejo de errores en el formulario
@@ -66,22 +74,15 @@ def listar_compras(request):
     return render(request, 'lista_compras.html', context)
 
 
+@login_required(login_url='login')
 def listar_compras_usuario(request):
-    if request.method == 'POST':
-        form = CorreoForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            compras = Compra.objects.filter(email=email)
-            cupones = UsuarioCupon.objects.filter(email=email)
-            return render(request, 'historial_compra.html', {'compras':compras,'cupones':cupones})
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, error)
-    else:
-        form = CorreoForm()
-
-    return render(request, 'historial_compra.html', {'form': form})
+    email = request.user.email
+    print(email)
+    compras = Compra.objects.filter(email=email)
+    print(compras)
+    cupones = UsuarioCupon.objects.filter(email=email)
+    print(cupones)
+    return render(request, 'historial_compra.html', {'compras':compras,'cupones':cupones})
 
 
 def historial_compra(request, id):

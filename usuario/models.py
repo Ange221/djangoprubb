@@ -4,14 +4,14 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 
 class UsuarioPersonalizado(AbstractUser):
-    nombre = models.CharField(max_length=100)
-    apellidos = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, default='Sin nombre')
+    apellidos = models.CharField(max_length=100,default= 'Sin apellido')
     email = models.EmailField(unique=True, null=True)
     ROL_CHOICES = [
         ('cliente', 'Cliente'),
         ('empleado', 'Empleado'),
     ]
-    rol = models.CharField(max_length=10, choices=ROL_CHOICES)
+    rol = models.CharField(max_length=10, choices=ROL_CHOICES, blank=True, null=True)
     
     def __str__(self):
         return f"{self.nombre} {self.apellidos} ({self.rol})"

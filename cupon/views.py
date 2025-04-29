@@ -2,7 +2,17 @@ from django.shortcuts import render, redirect
 from .forms import CuponForm
 from django.contrib import messages
 from .models import Cupon
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
+def pagina_empleado(request):
+    return render(request, 'pagina_empleado.html')
+
+def perfil_usuario(request):
+    cupones = Cupon.objects.filter(usuario=request.user)
+    return render(request, 'perfil.html', {'cupones': cupones})
+
+@login_required
 def registro(request):
     if request.method == 'POST':
         form = CuponForm(request.POST)

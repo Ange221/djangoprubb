@@ -44,7 +44,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'home' %}">
+                <a class="nav-link" href="{% url 'inicio' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Inicio</span></a>
             </li>
@@ -203,6 +203,8 @@
 
                                             <form method="POST" class="user">
                                                 {% csrf_token %}
+                                                {{ form.as_p }}
+    <button type="submit">Registrarse</button>
                                                 
                                                 <!-- Campo de usuario -->
                                                 <div class="form-field">

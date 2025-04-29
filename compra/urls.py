@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    #path('pagina_cliente/', views.pagina_cliente, name='home'),
     path('compra/', views.registro, name='registro_compra'),  # Página principal
     path('listar_compras/', views.listar_compras, name='listar_compras'),  # Vista de login
     path('historial_compra/', views.listar_compras_usuario, name='historial_compra'),  # Vista de registro

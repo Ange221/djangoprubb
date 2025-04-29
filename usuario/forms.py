@@ -1,17 +1,22 @@
 from django import forms
 from django.forms.widgets import TextInput, PasswordInput
 from django.contrib.auth.forms import AuthenticationForm
-from .models import UsuarioPersonalizado
+from .models import UsuarioPersonalizado 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 class RegistroForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    nombre = forms.CharField(required=True)
+    apellidos = forms.CharField(required=True)
+    rol = forms.ChoiceField(choices=[("cliente", "Cliente"), ("empleado", "Empleado")], required=False)
+
 
     class Meta:
-        model = User
-        fields = ["username", "email", "password1", "password2"]
+        model = UsuarioPersonalizado
+        fields = ["username", "email", "nombre", "apellidos", "password1", "password2", "rol"]
+
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(

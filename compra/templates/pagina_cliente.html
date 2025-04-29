@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página del Cliente</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Bienvenido, {{ usuario.nombre }}</h1>
+        <nav>
+            <ul>
+                <a href="{% url 'home' %}">Inicio</a>
+                <li><a href="{% url 'mis_cupones' %}">Mis Cupones</a></li>
+                <li><a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="informacion-cliente">
+            <h2>Detalles de tu Cuenta</h2>
+            <p><strong>Email:</strong> {{ usuario.email }}</p>
+            <p><strong>Rol:</strong> {{ usuario.rol }}</p>
+            <p><strong>Fecha de Registro:</strong> {{ usuario.fecha_registro }}</p>
+        </section>
+
+        <section class="cupones-disponibles">
+            <h2>Cupones Disponibles</h2>
+            {% for cupon in cupones %}
+                <div class="cupon">
+                    <h3>{{ cupon.nombre }}</h3>
+                    <p>{{ cupon.descripcion }}</p>
+                    <p><strong>Litros:</strong> {{ cupon.litros }} L</p>
+                    <p><strong>Descuento:</strong> {{ cupon.descuento }}%</p>
+                    <button onclick="window.print()">Imprimir</button>
+                </div>
+            {% empty %}
+                <p>No tienes cupones disponibles.</p>
+            {% endfor %}
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Gasolinería XYZ</p>
+    </footer>
+</body>
+</html>

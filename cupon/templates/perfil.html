@@ -1,0 +1,15 @@
+<h2>Mis Cupones</h2>
+{% for cupon in cupones %}
+  <div class="cupon">
+    <h3>{{ cupon.nombre }}</h3>
+    <p>{{ cupon.descripcion }}</p>
+    <p><strong>Litros:</strong> {{ cupon.litros }} L</p>
+    <p><strong>Descuento:</strong> {{ cupon.descuento }}%</p>
+    <button onclick="window.print()">Imprimir</button>
+  </div>
+{% empty %}
+  <p>No tienes cupones disponibles.</p>
+{% endfor %}
+
+<!-- Botón o enlace para regresar al home -->
+<a href="/" class="btn-regresar">Regresar al Home</a>
